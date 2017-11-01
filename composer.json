@@ -1,0 +1,21 @@
+{
+   "name": "niirrty/niirrty.translation",
+   "type": "library",
+   "description": "A PHP translation library.",
+   "license": "MIT",
+   "authors": [
+      {
+         "name": "Ni Irrty",
+         "email": "niirrty+code@gmail.com"
+      }
+   ],
+   "require": {
+      "php": ">=7.1",
+      "niirrty/niirrty.locale": "~0.1"
+   },
+   "autoload": {
+      "psr-4": {
+         "Niirrty\\Translation\\": "src/"
+      }
+   }
+}
