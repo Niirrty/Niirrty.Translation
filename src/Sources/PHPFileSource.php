@@ -200,12 +200,14 @@ class PHPFileSource extends AbstractSource
    private function reloadFromFolder()
    {
 
-      $languageFolderBase = \rtrim( $this->_options[ 'folder' ], '\\/' );
+      $languageFolderBase = $this->_options[ 'folder' ];
 
       if ( $this->hasVfsManager() )
       {
          $languageFolderBase = $this->getVfsManager()->parsePath( $languageFolderBase );
       }
+
+      $languageFolderBase = \rtrim( $languageFolderBase, '\\/' );
 
       if ( ! empty( $languageFolderBase ) ) { $languageFolderBase .= '/'; }
 
