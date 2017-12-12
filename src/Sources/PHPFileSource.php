@@ -14,6 +14,9 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation\Sources;
 
 
+use \Niirrty\IO\Vfs\Manager;
+
+
 /**
  * A php file source declares all translations of a specific locale inside an PHP file array
  *
@@ -50,8 +53,6 @@ namespace Niirrty\Translation\Sources;
  *
  * ];
  * </code>
- *
- * @since v0.1.0
  */
 class PHPFileSource extends AbstractSource
 {
@@ -63,13 +64,15 @@ class PHPFileSource extends AbstractSource
     * Init a new PHPFileSource instance.
     *
     * @param string                 $folder
+    * @param \Niirrty\IO\Vfs\Manager|null $vfsManager The optional virtual file system manager
     */
-   public function __construct( string $folder )
+   public function __construct( string $folder, ?Manager $vfsManager = null )
    {
 
       parent::__construct();
 
-      $this->_options[ 'folder' ] = $folder;
+      $this->_options[ 'folder'     ] = $folder;
+      $this->_options[ 'vfsManager' ] = $vfsManager;
 
    }
 
@@ -172,6 +175,20 @@ class PHPFileSource extends AbstractSource
 
    }
 
+   private function getVfsManager() : Manager
+   {
+
+      return $this->_options[ 'vfsManager' ];
+
+   }
+
+   private function hasVfsManager() : bool
+   {
+
+      return null !== $this->_options[ 'vfsManager' ];
+
+   }
+
    // </editor-fold>
 
 
@@ -183,7 +200,12 @@ class PHPFileSource extends AbstractSource
    private function reloadFromFolder()
    {
 
-      $languageFolderBase = rtrim( $this->_options[ 'folder' ], '\\/' );
+      $languageFolderBase = \rtrim( $this->_options[ 'folder' ], '\\/' );
+
+      if ( $this->hasVfsManager() )
+      {
+         $languageFolderBase = $this->getVfsManager()->parsePath( $languageFolderBase );
+      }
 
       if ( ! empty( $languageFolderBase ) ) { $languageFolderBase .= '/'; }
 

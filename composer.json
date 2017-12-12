@@ -11,7 +11,8 @@
    ],
    "require": {
       "php": ">=7.1",
-      "niirrty/niirrty.locale": "~0.1"
+      "niirrty/niirrty.locale": "~0.1",
+      "niirrty/niirrty.io.vfs": "~0.1"
    },
    "autoload": {
       "psr-4": {
