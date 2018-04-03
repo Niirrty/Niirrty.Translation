@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<translations>
+   <trans id="Yes" text="Ja" />
+   <trans id="No">Nein</trans>
+   <trans id="Maybe">
+      <text>Vieleicht</text>
+   </trans>
+   <trans id="MultipleValues 1">
+      <list>
+         <item>Foo</item>
+         <item>Bar</item>
+      </list>
+   </trans>
+   <trans>
+      <id>Yes or no</id>
+      <text>Ja oder nein</text>
+   </trans>
+   <trans>
+      <id>MultipleValues 2</id>
+      <dict>
+         <item key="12">Foo</item>
+         <item key="14">Bar</item>
+      </dict>
+   </trans>
+</translations>

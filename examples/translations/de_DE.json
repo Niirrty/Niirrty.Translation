@@ -1,0 +1,8 @@
+[
+   { "id": "Yes", "text": "Ja" },
+   { "id": "No", "text": "Nein" },
+   { "id": "Maybe", "text": "Vieleicht" },
+   { "id": "MultipleValues 1", "list": [ "Foo", "Bar" ] },
+   { "id": "Yes or no", "text": "Ja oder nein" },
+   { "id": "MultipleValues 2", "list": { "12": "Foo", "14": "Bar" } }
+]

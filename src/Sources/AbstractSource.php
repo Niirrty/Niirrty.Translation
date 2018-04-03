@@ -15,6 +15,8 @@ namespace Niirrty\Translation\Sources;
 
 
 use Niirrty\Locale\Locale;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 
 /**
@@ -49,6 +51,11 @@ abstract class AbstractSource implements ISource
     */
    protected $_options      = [];
 
+   /**
+    * @type \Psr\Log\LoggerInterface
+    */
+   protected $_log;
+
    // </editor-fold>
 
 
@@ -56,9 +63,15 @@ abstract class AbstractSource implements ISource
 
    /**
     * AbstractSource constructor.
+    *
+    * @param \Niirrty\Locale\Locale        $locale
+    * @param null|\Psr\Log\LoggerInterface $logger Optional logger
     */
-   protected function __construct()
+   protected function __construct( Locale $locale, ?LoggerInterface $logger = null )
    {
+
+      $this->_locale = $locale;
+      $this->_log    = null === $logger ? new NullLogger() : $logger;
 
       $this->_isValid = false;
 

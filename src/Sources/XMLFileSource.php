@@ -1,9 +1,9 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright  (c) 2017, Niirrty
- * @package        Niirrty\Translation\Sources
- * @since          2017-11-01
+ * @copyright  (c) 2017, Ni Irrty
+ * @license        MIT
+ * @since          2018-04-03
  * @version        0.1.0
  */
 
@@ -14,63 +14,24 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation\Sources;
 
 
-use \Niirrty\IO\Vfs\Manager;
+use Niirrty\IO\Vfs\Manager;
 use Niirrty\Locale\Locale;
+use Niirrty\XmlAttributeHelper;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 
-/**
- * A php file source declares all translations of a specific locale inside an PHP file array
- *
- * Loads a translation array source from a specific folder that contains one or more locale depending PHP files.
- *
- * E.G: if the defined $folder is '/var/www/example.com/translations' and the declared Locale is de_DE.UTF-8
- *
- * it tries to use:
- *
- * - /var/www/example.com/translations/de_DE.UTF-8.php
- * - /var/www/example.com/translations/de_DE.php
- * - /var/www/example.com/translations/de.php
- *
- * The used file should be declared like for translations with numeric indicators
- *
- * <code>
- * return [
- *
- *    1 => 'Übersetzter Text',
- *    2 => 'Anderer übersetzter Text',
- *    4 => [ 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag' ]
- *
- * ];
- * </code>
- *
- * or for translations with string indicators:
- *
- * <code>
- * return [
- *
- *    'Translated text' => 'Übersetzter Text',
- *    'Other translated text 1' => 'Anderer übersetzter Text',
- *    'WeekDays' => [ 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag' ]
- *
- * ];
- * </code>
- */
-class PHPFileSource extends AbstractSource
+class XMLFileSource extends AbstractSource
 {
 
 
-   // <editor-fold desc="// – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –">
+   // <editor-fold desc="// –––––––   C O N S T R U C T O R   A N D / O R   D E S T R U C T O R   ––––––––">
 
    /**
-    * PHPFileSource constructor.
-    *
-    * Init a new PHPFileSource instance.
+    * XMLFileSource constructor.
     *
     * @param string                        $folder
     * @param \Niirrty\Locale\Locale        $locale
-    * @param \Niirrty\IO\Vfs\Manager|null  $vfsManager The optional virtual file system manager
+    * @param \Niirrty\IO\Vfs\Manager|null  $vfsManager
     * @param null|\Psr\Log\LoggerInterface $logger
     */
    public function __construct(
@@ -81,14 +42,15 @@ class PHPFileSource extends AbstractSource
 
       $this->_options[ 'folder'     ] = $folder;
       $this->_options[ 'vfsManager' ] = $vfsManager;
-      $this->_log->info( 'Init PHP file translation source for folder "' . $folder . '".', [ 'Class' => __CLASS__ ] );
+
+      $this->_log->info( 'Init XML file translation source for folder "' . $folder . '".', [ 'Class' => __CLASS__ ] );
 
    }
 
    // </editor-fold>
 
 
-   // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
+   // <editor-fold desc="// –––––––   P U B L I C   M E T H O D S   ––––––––––––––––––––––––––––––––––––––">
 
    /**
     * Sets a new array with translation data that should be used.
@@ -98,12 +60,10 @@ class PHPFileSource extends AbstractSource
     *
     * @param array $data
     * @param bool  $doReload
-    * @return \Niirrty\Translation\Sources\PHPFileSource
+    * @return \Niirrty\Translation\Sources\XMLFileSource
     */
    public function setData( array $data, bool $doReload = true )
    {
-
-      $this->_log->info( 'Manual set new data' . ( $doReload ? ' and reload.' : '.' ), [ 'Class' => __CLASS__ ] );
 
       $this->_options[ 'data' ] = [];
 
@@ -151,7 +111,7 @@ class PHPFileSource extends AbstractSource
    /**
     * Reload the source by current defined options.
     *
-    * @return \Niirrty\Translation\Sources\PHPFileSource
+    * @return \Niirrty\Translation\Sources\XMLFileSource
     */
    public function reload()
    {
@@ -163,7 +123,6 @@ class PHPFileSource extends AbstractSource
 
       if ( ! isset( $this->_options[ 'file' ] ) || ! \file_exists( $this->_options[ 'file' ] ) )
       {
-         $this->_log->notice( 'Reload data fails because there is no folder/file defined', [ 'Class' => __CLASS__ ] );
          return $this;
       }
 
@@ -176,7 +135,7 @@ class PHPFileSource extends AbstractSource
     *
     * @param string $name
     * @param mixed  $value
-    * @return \Niirrty\Translation\Sources\PHPFileSource
+    * @return \Niirrty\Translation\Sources\XMLFileSource
     */
    public function setOption( string $name, $value )
    {
@@ -201,20 +160,19 @@ class PHPFileSource extends AbstractSource
 
    }
 
+
    // </editor-fold>
 
 
-   // <editor-fold desc="// – – –   P R I V A T E   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – –">
+   // <editor-fold desc="// –––––––   P R I V A T E   M E T H O D S   ––––––––––––––––––––––––––––––––––––">
 
    /**
-    * @return \Niirrty\Translation\Sources\PHPFileSource
+    * @return \Niirrty\Translation\Sources\XMLFileSource
     */
    private function reloadFromFolder()
    {
 
       $languageFolderBase = $this->_options[ 'folder' ];
-
-      $this->_log->info( 'Reload data from folder "' . $languageFolderBase . '".', [ 'Class' => __CLASS__ ] );
 
       if ( $this->hasVfsManager() )
       {
@@ -229,21 +187,21 @@ class PHPFileSource extends AbstractSource
 
       if ( \strlen( $this->_locale->getCharset() ) > 0 )
       {
-         $languageFile .= '/' . $this->_locale->getCharset() . '.php';
+         $languageFile .= '/' . $this->_locale->getCharset() . '.xml';
       }
       else
       {
-         $languageFile .= '.php';
+         $languageFile .= '.xml';
       }
 
       if ( ! \file_exists( $languageFile ) )
       {
-         $languageFile = $languageFolderBase . $this->_locale->getLID() . '_' . $this->_locale->getCID() . '.php';
+         $languageFile = $languageFolderBase . $this->_locale->getLID() . '_' . $this->_locale->getCID() . '.xml';
       }
 
       if ( ! \file_exists( $languageFile ) )
       {
-         $languageFile = $languageFolderBase . $this->_locale->getLID() . '.php';
+         $languageFile = $languageFolderBase . $this->_locale->getLID() . '.xml';
       }
 
       if ( ! \file_exists( $languageFile ) )
@@ -263,7 +221,7 @@ class PHPFileSource extends AbstractSource
    }
 
    /**
-    * @return \Niirrty\Translation\Sources\PHPFileSource
+    * @return \Niirrty\Translation\Sources\XMLFileSource
     */
    private function reloadFromFile()
    {
@@ -272,8 +230,7 @@ class PHPFileSource extends AbstractSource
 
       try
       {
-         /** @noinspection PhpIncludeInspection */
-         $translations = include $this->_options[ 'file' ];
+         $translations = $this->parseXML( \simplexml_load_file( $this->_options[ 'file' ] ) );
       }
       catch ( \Throwable $ex )
       {
@@ -292,6 +249,143 @@ class PHPFileSource extends AbstractSource
       }
 
       return $this->setData( \array_merge( $this->_options[ 'data' ], $translations ), false );
+
+   }
+
+   private function parseXML( \SimpleXMLElement $xmlDoc ) : array
+   {
+
+      $out = [];
+
+      if ( ! isset( $xmlDoc->trans ) )
+      {
+         return $out;
+      }
+
+      $elementIndex = 0;
+      foreach ( $xmlDoc->trans as $transElement )
+      {
+         if ( null === ( $id = $this->findId( $transElement ) ) )
+         {
+            $this->_log->notice(
+               'Parse-Error: Invalid trans element at index ' . $elementIndex . '. Missing a Identifier-Definition.' );
+            continue;
+         }
+         if ( null === ( $txt = $this->findText( $transElement ) ) )
+         {
+            if ( null === ( $txt = $this->findList( $transElement ) ) )
+            {
+               if ( null === ( $txt = $this->findDict( $transElement ) ) )
+               {
+                  $this->_log->notice(
+                     'Parse-Error: Invalid trans element at index ' . $elementIndex . '. Missing a Text/List/Dict.' );
+                  continue;
+               }
+            }
+         }
+         $out[ $id ] = $txt;
+      }
+
+      return $out;
+
+   }
+
+   private static function findId( \SimpleXMLElement $transElement ) : ?string
+   {
+
+      if ( null !== ( $id = XmlAttributeHelper::GetAttributeValue( $transElement, 'id' ) ) )
+      {
+         return $id;
+      }
+
+      if ( isset( $transElement->id ) )
+      {
+         return (string) $transElement->id;
+      }
+
+      return null;
+
+   }
+
+   private static function findText( \SimpleXMLElement $transElement ) : ?string
+   {
+
+      if ( null !== ( $txt = XmlAttributeHelper::GetAttributeValue( $transElement, 'text' ) ) )
+      {
+         return $txt;
+      }
+
+      if ( isset( $transElement->text ) )
+      {
+         return (string) $transElement->text;
+      }
+
+      if ( ! isset( $transElement->list ) && ! isset( $transElement->dict ) )
+      {
+         return (string) $transElement;
+      }
+
+      return null;
+
+   }
+
+   private static function findList( \SimpleXMLElement $transElement ) : ?array
+   {
+
+      if ( ! isset( $transElement->list ) )
+      {
+         return null;
+      }
+
+      $out = [];
+
+      if ( ! isset( $transElement->list->item ) )
+      {
+         return $out;
+      }
+
+      foreach ( $transElement->list->item as $itemElement )
+      {
+         $out[] = (string) $itemElement;
+      }
+
+      return $out;
+
+   }
+
+   private static function findDict( \SimpleXMLElement $transElement ) : ?array
+   {
+
+      if ( ! isset( $transElement->dict ) )
+      {
+         return null;
+      }
+
+      $out = [];
+
+      if ( ! isset( $transElement->dict->item ) )
+      {
+         return $out;
+      }
+
+      foreach ( $transElement->dict->item as $itemElement )
+      {
+         $key = XmlAttributeHelper::GetAttributeValue( $itemElement, 'key' );
+         if ( null === $key )
+         {
+            $out[] = (string) $itemElement;
+         }
+         else if ( \is_numeric( $key ) )
+         {
+            $out[ (int) $key ] = (string) $itemElement;
+         }
+         else
+         {
+            $out[ $key ] = (string) $itemElement;
+         }
+      }
+
+      return $out;
 
    }
 

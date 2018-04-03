@@ -14,6 +14,7 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation\Sources;
 
 
+use Niirrty\IValidStatus;
 use Niirrty\Locale\Locale;
 
 
@@ -22,16 +23,8 @@ use Niirrty\Locale\Locale;
  *
  * @since v0.1.0
  */
-interface ISource
+interface ISource extends IValidStatus
 {
-
-
-   /**
-    * Gets if the current source is valid for reading.
-    *
-    * @return bool
-    */
-   public function isValid() : bool;
 
    /**
     * Reads one or more translation values.
