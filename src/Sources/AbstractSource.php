@@ -90,7 +90,7 @@ abstract class AbstractSource implements ISource
    public final function isValid() : bool
    {
 
-      return $this->_isValid && null !== $this->_locale;
+      return $this->_isValid;
 
    }
 

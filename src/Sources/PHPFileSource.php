@@ -17,7 +17,6 @@ namespace Niirrty\Translation\Sources;
 use \Niirrty\IO\Vfs\Manager;
 use Niirrty\Locale\Locale;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 
 /**
@@ -82,6 +81,7 @@ class PHPFileSource extends AbstractSource
       $this->_options[ 'folder'     ] = $folder;
       $this->_options[ 'vfsManager' ] = $vfsManager;
       $this->_log->info( 'Init PHP file translation source for folder "' . $folder . '".', [ 'Class' => __CLASS__ ] );
+      $this->reload();
 
    }
 
@@ -164,6 +164,7 @@ class PHPFileSource extends AbstractSource
       if ( ! isset( $this->_options[ 'file' ] ) || ! \file_exists( $this->_options[ 'file' ] ) )
       {
          $this->_log->notice( 'Reload data fails because there is no folder/file defined', [ 'Class' => __CLASS__ ] );
+         $this->_isValid = false;
          return $this;
       }
 
@@ -212,6 +213,8 @@ class PHPFileSource extends AbstractSource
    private function reloadFromFolder()
    {
 
+      $this->_isValid = false;
+
       $languageFolderBase = $this->_options[ 'folder' ];
 
       $this->_log->info( 'Reload data from folder "' . $languageFolderBase . '".', [ 'Class' => __CLASS__ ] );
@@ -252,6 +255,8 @@ class PHPFileSource extends AbstractSource
             $this->_options[ 'file' ],
             $this->_options[ 'folder' ]
          );
+         $this->_log->notice( 'Unable to get translations for locale ' . $this->_locale, [ 'Class' => __CLASS__ ] );
+         $this->_isValid = false;
          return $this;
       }
 
@@ -268,6 +273,8 @@ class PHPFileSource extends AbstractSource
    private function reloadFromFile()
    {
 
+      $this->_isValid = false;
+
       $this->_log->info( 'Reload data from file "' . $this->_options[ 'file' ] . '".', [ 'Class' => __CLASS__ ] );
 
       try
@@ -279,17 +286,22 @@ class PHPFileSource extends AbstractSource
       {
          $this->_log->notice( 'Unable to include translations file.' . $ex->getMessage(), [ 'Class' => __CLASS__ ] );
          $translations = [];
+         $this->_isValid = false;
       }
 
       if ( ! \is_array( $translations ) )
       {
+         $this->_log->notice( 'Invalid translations file format.', [ 'Class' => __CLASS__ ] );
          $translations = [];
+         $this->_isValid = false;
       }
 
       if ( ! isset( $this->_options[ 'data' ] ) )
       {
          $this->_options[ 'data' ] = [];
       }
+
+      $this->_isValid = true;
 
       return $this->setData( \array_merge( $this->_options[ 'data' ], $translations ), false );
 
