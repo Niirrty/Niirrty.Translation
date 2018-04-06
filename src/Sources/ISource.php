@@ -4,7 +4,7 @@
  * @copyright  (c) 2017, Niirrty
  * @package        Niirrty\Translation\Sources
  * @since          2017-11-01
- * @version        0.1.0
+ * @version        0.2.0
  */
 
 
@@ -15,6 +15,7 @@ namespace Niirrty\Translation\Sources;
 
 
 use Niirrty\Locale\Locale;
+use Psr\Log\LoggerInterface;
 
 
 /**
@@ -24,14 +25,6 @@ use Niirrty\Locale\Locale;
  */
 interface ISource
 {
-
-
-   /**
-    * Gets if the current source is valid for reading.
-    *
-    * @return bool
-    */
-   public function isValid() : bool;
 
    /**
     * Reads one or more translation values.
@@ -50,12 +43,11 @@ interface ISource
    public function getLocale() : Locale;
 
    /**
-    * Sets a new locale.
+    * Gets the current defined logger.
     *
-    * @param \Niirrty\Locale\Locale $locale
-    * @return \Niirrty\Translation\Sources\ISource
+    * @return \Psr\Log\LoggerInterface
     */
-   public function setLocale( Locale $locale );
+   public function getLogger() : LoggerInterface;
 
    /**
     * Gets all options of the translation source.
@@ -74,12 +66,20 @@ interface ISource
    public function getOption( string $name, $defaultValue = false );
 
    /**
-    * Gets if an option with defined name exists.
+    * Sets a new locale.
     *
-    * @param string $name The option name.
-    * @return bool
+    * @param \Niirrty\Locale\Locale $locale
+    * @return \Niirrty\Translation\Sources\ISource
     */
-   public function hasOption( string $name ) : bool;
+   public function setLocale( Locale $locale );
+
+   /**
+    * Sets a new logger or null if no logger should be used.
+    *
+    * @param \Psr\Log\LoggerInterface|null $logger
+    * @return \Niirrty\Translation\Sources\ISource
+    */
+   public function setLogger( ?LoggerInterface $logger );
 
    /**
     * Sets a options value.
@@ -89,6 +89,14 @@ interface ISource
     * @return \Niirrty\Translation\Sources\ISource
     */
    public function setOption( string $name, $value );
+
+   /**
+    * Gets if an option with defined name exists.
+    *
+    * @param string $name The option name.
+    * @return bool
+    */
+   public function hasOption( string $name ) : bool;
 
    /**
     * Reload the source by current defined options.

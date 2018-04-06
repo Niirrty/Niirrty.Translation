@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<translations>
+   <trans id="MultipleValues 1">
+      <list>
+      </list>
+   </trans>
+   <trans id="MultipleValues 2">
+      <dict>
+      </dict>
+   </trans>
+   <trans id="MultipleValues 3">
+      <dict>
+         <item>Foo Bar</item>
+      </dict>
+   </trans>
+</translations>

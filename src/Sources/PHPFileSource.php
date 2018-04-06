@@ -4,7 +4,7 @@
  * @copyright  (c) 2017, Niirrty
  * @package        Niirrty\Translation\Sources
  * @since          2017-11-01
- * @version        0.1.0
+ * @version        0.2.0
  */
 
 
@@ -14,7 +14,9 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation\Sources;
 
 
-use \Niirrty\IO\Vfs\Manager;
+use Niirrty\IO\Vfs\IVfsManager;
+use Niirrty\Locale\Locale;
+use Psr\Log\LoggerInterface;
 
 
 /**
@@ -54,25 +56,27 @@ use \Niirrty\IO\Vfs\Manager;
  * ];
  * </code>
  */
-class PHPFileSource extends AbstractSource
+class PHPFileSource extends AbstractFileSource
 {
 
 
    // <editor-fold desc="// – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –">
 
    /**
-    * Init a new PHPFileSource instance.
+    * PHPFileSource constructor.
     *
-    * @param string                 $folder
-    * @param \Niirrty\IO\Vfs\Manager|null $vfsManager The optional virtual file system manager
+    * @param string                           $folder
+    * @param \Niirrty\Locale\Locale           $locale
+    * @param \Niirrty\IO\Vfs\IVfsManager|null $vfsManager
+    * @param null|\Psr\Log\LoggerInterface    $logger
     */
-   public function __construct( string $folder, ?Manager $vfsManager = null )
+   public function __construct(
+      string $folder, Locale $locale, ?IVfsManager $vfsManager = null, ?LoggerInterface $logger = null )
    {
 
-      parent::__construct();
+      parent::__construct( $folder, 'php', $locale, $logger, $vfsManager );
 
-      $this->_options[ 'folder'     ] = $folder;
-      $this->_options[ 'vfsManager' ] = $vfsManager;
+      $this->logInfo( 'Init PHP file translation source for folder "' . $folder . '".', __CLASS__ );
 
    }
 
@@ -80,84 +84,6 @@ class PHPFileSource extends AbstractSource
 
 
    // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
-
-   /**
-    * Sets a new array with translation data that should be used.
-    *
-    * The array keys are the identifiers (string|int) the values must be arrays with items 'text' and optionally
-    * with 'category' or the values is a string that will be converted to [ 'text' => $value ]
-    *
-    * @param array $data
-    * @param bool  $doReload
-    * @return \Niirrty\Translation\Sources\PHPFileSource
-    */
-   public function setData( array $data, bool $doReload = true )
-   {
-
-      $this->_options[ 'data' ] = [];
-
-      foreach ( $data as $key => $value )
-      {
-         $this->_options[ 'data' ][ $key ] = $value;
-      }
-
-      if ( $doReload )
-      {
-         $this->reload();
-      }
-
-      return $this;
-
-   }
-
-   /**
-    * Reads one or more translation values.
-    *
-    * @param  string|int $identifier
-    * @param  mixed      $defaultTranslation Is returned if no translation was found for defined identifier.
-    * @return mixed
-    */
-   public function read( $identifier, $defaultTranslation = false )
-   {
-
-      if ( ! \is_int( $identifier ) && ! \is_string( $identifier ) )
-      {
-         // No identifier => RETURN ALL REGISTERED TRANSLATIONS
-         return $this->_options[ 'data' ];
-      }
-
-      // A known identifier format
-      if ( ! isset( $this->_options[ 'data' ][ $identifier ] ) )
-      {
-         // The translation not exists
-         return $defaultTranslation;
-      }
-
-      return $this->_options[ 'data' ][ $identifier ];
-
-   }
-
-   /**
-    * Reload the source by current defined options.
-    *
-    * @return \Niirrty\Translation\Sources\PHPFileSource
-    */
-   public function reload()
-   {
-
-      if ( isset( $this->_options[ 'folder' ] ) )
-      {
-         return $this->reloadFromFolder();
-      }
-
-      if ( ! isset( $this->_options[ 'file' ] ) || ! \file_exists( $this->_options[ 'file' ] ) )
-      {
-         return $this;
-      }
-
-      return $this->reloadFromFile();
-
-   }
 
    /**
     * Sets a options value.
@@ -175,20 +101,6 @@ class PHPFileSource extends AbstractSource
 
    }
 
-   private function getVfsManager() : Manager
-   {
-
-      return $this->_options[ 'vfsManager' ];
-
-   }
-
-   private function hasVfsManager() : bool
-   {
-
-      return null !== $this->_options[ 'vfsManager' ];
-
-   }
-
    // </editor-fold>
 
 
@@ -197,72 +109,25 @@ class PHPFileSource extends AbstractSource
    /**
     * @return \Niirrty\Translation\Sources\PHPFileSource
     */
-   private function reloadFromFolder()
+   protected function reloadFromFile()
    {
 
-      $languageFolderBase = $this->_options[ 'folder' ];
-
-      if ( $this->hasVfsManager() )
-      {
-         $languageFolderBase = $this->getVfsManager()->parsePath( $languageFolderBase );
-      }
-
-      $languageFolderBase = \rtrim( $languageFolderBase, '\\/' );
-
-      if ( ! empty( $languageFolderBase ) ) { $languageFolderBase .= '/'; }
-
-      $languageFile = $languageFolderBase . $this->_locale->getLID() . '_' . $this->_locale->getCID();
-
-      if ( \strlen( $this->_locale->getCharset() ) > 0 )
-      {
-         $languageFile .= '/' . $this->_locale->getCharset() . '.php';
-      }
-      else
-      {
-         $languageFile .= '.php';
-      }
-
-      if ( ! \file_exists( $languageFile ) )
-      {
-         $languageFile = $languageFolderBase . $this->_locale->getLID() . '_' . $this->_locale->getCID() . '.php';
-      }
-
-      if ( ! \file_exists( $languageFile ) )
-      {
-         $languageFile = $languageFolderBase . $this->_locale->getLID() . '.php';
-      }
-
-      if ( ! \file_exists( $languageFile ) )
-      {
-         unset(
-            $this->_options[ 'file' ],
-            $this->_options[ 'folder' ]
-         );
-         return $this;
-      }
-
-      $this->_options[ 'file' ]   = $languageFile;
-      $this->_options[ 'folder' ] = $languageFolderBase;
-
-      return $this->reloadFromFile();
-
-   }
-
-   /**
-    * @return \Niirrty\Translation\Sources\PHPFileSource
-    */
-   private function reloadFromFile()
-   {
+      $this->logInfo( 'Load data from file "' . $this->_options[ 'file' ] . '".', __CLASS__ );
 
       try
       {
          /** @noinspection PhpIncludeInspection */
          $translations = include $this->_options[ 'file' ];
       }
-      catch ( \Throwable $ex ) { $translations = []; }
+      catch ( \Throwable $ex )
+      {
+         $this->logNotice( 'Unable to include translations file.' . $ex->getMessage(), __CLASS__ );
+         $translations = [];
+      }
 
       if ( ! \is_array( $translations ) )
       {
+         $this->logNotice( 'Invalid translations file format.', __CLASS__ );
          $translations = [];
       }
 
@@ -271,7 +136,9 @@ class PHPFileSource extends AbstractSource
          $this->_options[ 'data' ] = [];
       }
 
-      return $this->setData( \array_merge( $this->_options[ 'data' ], $translations ), false );
+      $this->setData( \array_merge( $this->_options[ 'data' ], $translations ), false );
+
+      return $this;
 
    }
 

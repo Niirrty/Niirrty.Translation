@@ -4,7 +4,7 @@
  * @copyright  (c) 2017, Niirrty
  * @package        Niirrty\Translation
  * @since          2017-11-01
- * @version        0.1.0
+ * @version        0.2.0
  */
 
 
@@ -28,7 +28,7 @@ use Niirrty\Translation\Sources\ISource;
  *
  * @since v0.1.0
  */
-class Translator
+class Translator implements ITranslator
 {
 
 
@@ -82,7 +82,7 @@ class Translator
          if ( ! Locale::HasGlobalInstance() )
          {
             throw new TranslationException(
-               'Can not init a translator if not usable Locale instance is avialable!'
+               'Can not init a translator if no usable Locale instance is avialable!'
             );
          }
          $locale = Locale::GetGlobalInstance();
@@ -309,6 +309,16 @@ class Translator
       }
 
       return self::$_instance;
+
+   }
+
+   /**
+    * Removes the global translator instance.
+    */
+   public static function RemoveInstance()
+   {
+
+      self::$_instance = null;
 
    }
 

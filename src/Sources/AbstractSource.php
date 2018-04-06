@@ -4,7 +4,7 @@
  * @copyright  (c) 2017, Niirrty
  * @package        Niirrty\Translation\Sources
  * @since          2017-11-01
- * @version        0.1.0
+ * @version        0.2.0
  */
 
 
@@ -15,6 +15,8 @@ namespace Niirrty\Translation\Sources;
 
 
 use Niirrty\Locale\Locale;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 
 /**
@@ -27,20 +29,6 @@ abstract class AbstractSource implements ISource
 
 
    // <editor-fold desc="// – – –   P R O T E C T E D   F I E L D S   – – – – – – – – – – – – – – – – – – – – – –">
-
-   /**
-    * Declares if the source is valid for reading.
-    *
-    * @type bool
-    */
-   protected $_isValid;
-
-   /**
-    * The locale that should be used by Source
-    *
-    * @type \Niirrty\Locale\Locale
-    */
-   protected $_locale;
 
    /**
     * All options of the Source implementation
@@ -56,11 +44,16 @@ abstract class AbstractSource implements ISource
 
    /**
     * AbstractSource constructor.
+    *
+    * @param \Niirrty\Locale\Locale        $locale
+    * @param null|\Psr\Log\LoggerInterface $logger Optional logger
     */
-   protected function __construct()
+   protected function __construct( Locale $locale, ?LoggerInterface $logger = null )
    {
 
-      $this->_isValid = false;
+      $this->_options[ 'locale' ] = $locale;
+
+      $this->setLogger( $logger );
 
    }
 
@@ -70,18 +63,6 @@ abstract class AbstractSource implements ISource
    // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
 
    /**
-    * Gets if the current source is valid for reading.
-    *
-    * @return bool
-    */
-   public final function isValid() : bool
-   {
-
-      return $this->_isValid && null !== $this->_locale;
-
-   }
-
-   /**
     * Gets the current defined locale.
     *
     * @return \Niirrty\Locale\Locale
@@ -89,7 +70,19 @@ abstract class AbstractSource implements ISource
    public final function getLocale() : Locale
    {
 
-      return $this->_locale;
+      return $this->_options[ 'locale' ];
+
+   }
+
+   /**
+    * Gets the current defined logger.
+    *
+    * @return \Psr\Log\LoggerInterface
+    */
+   public final function getLogger() : LoggerInterface
+   {
+
+      return $this->_options[ 'logger' ];
 
    }
 
@@ -99,12 +92,31 @@ abstract class AbstractSource implements ISource
     * @param \Niirrty\Locale\Locale $locale
     * @return \Niirrty\Translation\Sources\ISource
     */
-   public function setLocale( Locale $locale )
+   public final function setLocale( Locale $locale )
    {
 
-      $this->_locale = $locale;
+      $this->_options[ 'locale' ] = $locale;
 
-      return $this->reload();
+      unset( $this->_options[ 'data' ] );
+
+      return $this;
+
+   }
+
+   /**
+    * Sets a new logger or null if no logger should be used.
+    *
+    * @param \Psr\Log\LoggerInterface|null $logger
+    * @return \Niirrty\Translation\Sources\ISource
+    */
+   public final function setLogger( ?LoggerInterface $logger )
+   {
+
+      $this->_options[ 'logger' ] = null === $logger ? new NullLogger() : $logger;
+
+      unset( $this->_options[ 'data' ] );
+
+      return $this;
 
    }
 
@@ -121,11 +133,10 @@ abstract class AbstractSource implements ISource
    }
 
    /**
-    * Gets the option value of option with defined name or FALSE if the option is unknown.
+    * Gets the option value of option with defined name or $defaultValue if the option is unknown.
     *
     * @param string $name The name of the option.
-    * @param mixed  $defaultValue This value is remembered and returned if the option not exists. If the value is NULL
-    *                             the value is not set, it is only returned in this case.
+    * @param mixed  $defaultValue This value is returned if the option not exists.
     * @return mixed
     */
    public final function getOption( string $name, $defaultValue = false )
@@ -133,11 +144,7 @@ abstract class AbstractSource implements ISource
 
       if ( ! $this->hasOption( $name ) )
       {
-         if ( null === $defaultValue )
-         {
-            return $defaultValue;
-         }
-         $this->_options[ $name ] = $defaultValue;
+         return $defaultValue;
       }
 
       return $this->_options[ $name ];
@@ -169,7 +176,33 @@ abstract class AbstractSource implements ISource
 
       $this->_options[ $name ] = $value;
 
+      unset( $this->_options[ 'data' ] );
+
       return $this;
+
+   }
+
+   // </editor-fold>
+
+
+   // <editor-fold desc="// –––––––   P R O T E C T E D   M E T H O D S   ––––––––––––––––––––––––––––––––">
+
+   protected function logInfo( string $message, string $class )
+   {
+
+      $this->_options[ 'logger' ]->info( $message, [ 'Class' => $class ] );
+
+   }
+   protected function logNotice( string $message, string $class )
+   {
+
+      $this->_options[ 'logger' ]->notice( $message, [ 'Class' => $class ] );
+
+   }
+   protected function logWarning( string $message, string $class )
+   {
+
+      $this->_options[ 'logger' ]->warning( $message, [ 'Class' => $class ] );
 
    }
 
