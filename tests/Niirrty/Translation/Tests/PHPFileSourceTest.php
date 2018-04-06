@@ -11,8 +11,8 @@
 namespace Niirrty\Translation\Tests;
 
 
-use Niirrty\IO\Vfs\Handler;
-use Niirrty\IO\Vfs\Manager;
+use Niirrty\IO\Vfs\VfsHandler;
+use Niirrty\IO\Vfs\VfsManager;
 use Niirrty\Locale\Locale;
 use Niirrty\Translation\Sources\PHPFileSource;
 use Niirrty\Translation\Tests\Fixtures\ArrayCallbackLogger;
@@ -48,8 +48,8 @@ class PHPFileSourceTest extends TestCase
       $this->srcFr = new PHPFileSource(
          'my://data/translations',
          new Locale( 'fr', 'FR', 'utf-8' ),
-         Manager::Create()->addHandler(
-            new Handler( 'MyVFS', 'my', '://', \dirname( \dirname( \dirname( __DIR__ ) ) ) ) ),
+         VfsManager::Create()->addHandler(
+            new VfsHandler( 'MyVFS', 'my', '://', \dirname( \dirname( \dirname( __DIR__ ) ) ) ) ),
          $this->log
       );
 
@@ -68,7 +68,7 @@ class PHPFileSourceTest extends TestCase
          [  LogLevel::INFO,
             'Init PHP file translation source for folder "my://data/translations".',
             [ 'Class' => 'Niirrty\\Translation\\Sources\\PHPFileSource' ] ],
-         $this->log->getMessage( 4 )
+         $this->log->getMessage( 1 )
       );
 
    }
@@ -88,16 +88,16 @@ class PHPFileSourceTest extends TestCase
    public function testReload()
    {
 
+      $this->srcDe->setTranslationsFolder( null );
       $this->srcDe->setOption( 'file', null );
-      $this->srcDe->setOption( 'folder', null );
       $this->srcDe->reload();
       $this->assertSame(
          [  LogLevel::NOTICE,
             'Reload data fails because there is no folder/file defined',
-            [ 'Class' => 'Niirrty\\Translation\\Sources\\PHPFileSource' ] ],
+            [ 'Class' => 'Niirrty\\Translation\\Sources\\AbstractFileSource' ] ],
          $this->log->lastMessage()
       );
-      $this->srcDe->setOption( 'file', \dirname( \dirname( \dirname( __DIR__ ) ) ) . '/data/translations/de_DE.php' );
+      $this->srcDe->setTranslationsFolder( \dirname( \dirname( \dirname( __DIR__ ) ) ) . '/data/translations' );
       $this->srcDe->reload();
       $this->assertSame( 'Ein anderer Beispieltext', $this->srcDe->read( 'An other example text' ) );
 
@@ -109,15 +109,17 @@ class PHPFileSourceTest extends TestCase
       $this->assertSame( 'Ein anderer Beispieltext', $this->srcDe->read( 'An other example text' ) );
 
       $this->srcDe->setLocale( new Locale( 'it', 'IT' ) );
+      $this->srcDe->reload();
       $this->assertSame(
          [  LogLevel::NOTICE,
             'Unable to get translations for locale it_IT',
-            [ 'Class' => 'Niirrty\\Translation\\Sources\\PHPFileSource' ] ],
+            [ 'Class' => 'Niirrty\\Translation\\Sources\\AbstractFileSource' ] ],
          $this->log->lastMessage()
       );
 
       $this->srcDe->setOption( 'folder', \dirname( \dirname( \dirname( __DIR__ ) ) ) . '/data/translations' );
       $this->srcDe->setLocale( new Locale( 'ru', 'RU' ) );
+      $this->srcDe->reload();
       $this->assertSame(
          [  LogLevel::NOTICE,
             'Unable to include translations file.fopen(/foo/bar/baz19293949596979899909): failed to open stream: No such file or directory',
@@ -125,6 +127,7 @@ class PHPFileSourceTest extends TestCase
          $this->log->getMessage( $this->log->countMessages() - 2 )
       );
       $this->srcDe->setLocale( new Locale( 'de', 'CH' ) );
+      $this->srcDe->reload();
       $this->assertSame(
          [  LogLevel::NOTICE,
             'Invalid translations file format.',
@@ -141,12 +144,6 @@ class PHPFileSourceTest extends TestCase
       $this->assertSame( 'Foo', $this->srcDe->read( 'foo' ) );
 
    }
-   public function testIsValid()
-   {
-
-      $this->assertTrue( $this->srcDe->isValid() );
-
-   }
    public function testGetLocale()
    {
 
@@ -159,14 +156,11 @@ class PHPFileSourceTest extends TestCase
 
       $this->assertSame(
          [
-            'folder' => \dirname( \dirname( \dirname( __DIR__ ) ) ) . '/data/translations/',
+            'locale' => $this->srcDe->getLocale(),
+            'logger' => $this->log,
             'vfsManager' => null,
-            'file' => \dirname( \dirname( \dirname( __DIR__ ) ) ) . '/data/translations/de_DE.php',
-            'data' => [
-               'A example text' => 'Ein Beispieltext',
-               'An other example text' => 'Ein anderer Beispieltext',
-               'weekdays' => [ 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag' ]
-            ]
+            'folder' => \dirname( \dirname( \dirname( __DIR__ ) ) ) . '/data/translations',
+            'fileExtension' => 'php'
          ],
          $this->srcDe->getOptions()
       );
@@ -178,13 +172,8 @@ class PHPFileSourceTest extends TestCase
       $this->assertNull( $this->srcDe->getOption( 'vfsManager' ) );
       $this->assertFalse( $this->srcDe->getOption( 'foo' ) );
       $this->assertNull( $this->srcDe->getOption( 'bar', null ) );
-      $this->assertSame( \dirname( \dirname( \dirname( __DIR__ ) ) ) . '/data/translations/', $this->srcFr->getOption( 'folder' ) );
+      $this->assertSame( 'my://data/translations', $this->srcFr->getOption( 'folder' ) );
 
    }
-   #public function test() { $this->assertSame( '', '' ); }
-   #public function test() { $this->assertSame( '', '' ); }
-   #public function test() { $this->assertSame( '', '' ); }
-   #public function test() { $this->assertSame( '', '' ); }
-   #public function test() { $this->assertSame( '', '' ); }
 
 }
