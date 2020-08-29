@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright  (c) 2017, Ni Irrty
+ * @copyright      © 2018-2020, Niirrty
  * @license        MIT
  * @since          2018-04-06
- * @version        0.2.0
+ * @version        0.3.0
  */
 
 
@@ -27,93 +27,93 @@ use Niirrty\Translation\Sources\ISource;
 interface ITranslator
 {
 
-   /**
-    * Gets the source with defined name or NULL.
-    *
-    * @param string $sourceName
-    * @return \Niirrty\Translation\Sources\ISource|null
-    */
-   public function getSource( string $sourceName ) : ?ISource;
+    /**
+     * Gets the source with defined name or NULL.
+     *
+     * @param string $sourceName
+     * @return ISource|null
+     */
+    public function getSource( string $sourceName ) : ?ISource;
 
-   /**
-    * Adds a source with an associated name.
-    *
-    * @param string                               $sourceName The unique source name
-    * @param \Niirrty\Translation\Sources\ISource $source
-    * @return \Niirrty\Translation\ITranslator
-    */
-   public function addSource( string $sourceName, ISource $source );
+    /**
+     * Adds a source with an associated name.
+     *
+     * @param string                               $sourceName The unique source name
+     * @param ISource $source
+     * @return ITranslator
+     */
+    public function addSource( string $sourceName, ISource $source );
 
-   /**
-    * Removes a source
-    *
-    * @param string $sourceName The source name
-    * @return \Niirrty\Translation\ITranslator
-    */
-   public function removeSource( string $sourceName );
+    /**
+     * Removes a source
+     *
+     * @param string $sourceName The source name
+     * @return ITranslator
+     */
+    public function removeSource( string $sourceName );
 
-   /**
-    * Removes all sources.
-    *
-    * @return \Niirrty\Translation\ITranslator
-    */
-   public function cleanSources();
+    /**
+     * Removes all sources.
+     *
+     * @return ITranslator
+     */
+    public function cleanSources();
 
-   /**
-    * Reads the translation and return it.
-    *
-    * The returned translation can be of each known type, depending to the requirements.
-    *
-    * If a valid source index is defined, only this source is used.
-    *
-    * @param string|int  $identifier         The translation identifier
-    * @param string|null $sourceName         The name of the source or NULL for search all sources
-    * @param mixed       $defaultTranslation Is returned if the translation was not found
-    * @return mixed
-    */
-   public function read( $identifier, ?string $sourceName = null, $defaultTranslation = false );
+    /**
+     * Reads the translation and return it.
+     *
+     * The returned translation can be of each known type, depending to the requirements.
+     *
+     * If a valid source index is defined, only this source is used.
+     *
+     * @param string|int  $identifier         The translation identifier
+     * @param string|null $sourceName         The name of the source or NULL for search all sources
+     * @param mixed       $defaultTranslation Is returned if the translation was not found
+     * @return mixed
+     */
+    public function read( $identifier, ?string $sourceName = null, $defaultTranslation = false );
 
-   /**
-    * Gets a array with all defined sources. THe keys are the associated source names.
-    *
-    * @return array
-    */
-   public function getSources() : array;
+    /**
+     * Gets a array with all defined sources. THe keys are the associated source names.
+     *
+     * @return array
+     */
+    public function getSources() : array;
 
-   /**
-    * Gets a iterator over all defined sources.
-    *
-    * @return \Generator
-    */
-   public function getSourcesIterator() : \Generator;
+    /**
+     * Gets a iterator over all defined sources.
+     *
+     * @return \Generator
+     */
+    public function getSourcesIterator() : \Generator;
 
-   /**
-    * Gets if one or more sources are defined.
-    *
-    * @return bool
-    */
-   public function hasSources() : bool;
+    /**
+     * Gets if one or more sources are defined.
+     *
+     * @return bool
+     */
+    public function hasSources() : bool;
 
-   /**
-    * Gets if a source with defined name exists.
-    *
-    * @param string $sourceName
-    * @return bool
-    */
-   public function hasSource( string $sourceName ) : bool;
+    /**
+     * Gets if a source with defined name exists.
+     *
+     * @param string $sourceName
+     * @return bool
+     */
+    public function hasSource( string $sourceName ) : bool;
 
-   /**
-    * Return how many sources currently are defined.
-    *
-    * @return int
-    */
-   public function countSources() : int;
+    /**
+     * Return how many sources currently are defined.
+     *
+     * @return int
+     */
+    public function countSources() : int;
 
-   /**
-    * Gets the names of all defined sources.
-    *
-    * @return array
-    */
-   public function getSourceNames() : array;
+    /**
+     * Gets the names of all defined sources.
+     *
+     * @return array
+     */
+    public function getSourceNames() : array;
 
 }

@@ -11,9 +11,11 @@
    ],
    "require": {
       "php": ">=7.1",
-      "niirrty/niirrty.locale": "~0.2",
-      "niirrty/niirrty.io.vfs": "~0.2.1",
-      "psr/log": "~1.0"
+      "niirrty/niirrty.locale": "~0.3",
+      "niirrty/niirrty.io.vfs": "~0.3",
+      "psr/log": "~1.0",
+     "ext-json": "*",
+     "ext-simplexml": "*"
    },
    "require-dev": {
       "phpunit/phpunit": "7.*",

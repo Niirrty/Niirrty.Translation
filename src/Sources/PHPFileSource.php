@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright  (c) 2017, Niirrty
+ * @copyright      © 2017-2020, Niirrty
  * @package        Niirrty\Translation\Sources
  * @since          2017-11-01
- * @version        0.2.0
+ * @version        0.3.0
  */
 
 
@@ -60,89 +60,89 @@ class PHPFileSource extends AbstractFileSource
 {
 
 
-   // <editor-fold desc="// – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –">
+    // <editor-fold desc="// – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –">
 
-   /**
-    * PHPFileSource constructor.
-    *
-    * @param string                           $folder
-    * @param \Niirrty\Locale\Locale           $locale
-    * @param \Niirrty\IO\Vfs\IVfsManager|null $vfsManager
-    * @param null|\Psr\Log\LoggerInterface    $logger
-    */
-   public function __construct(
-      string $folder, Locale $locale, ?IVfsManager $vfsManager = null, ?LoggerInterface $logger = null )
-   {
+    /**
+     * PHPFileSource constructor.
+     *
+     * @param string                           $folder
+     * @param Locale $locale
+     * @param IVfsManager|null $vfsManager
+     * @param null|LoggerInterface $logger
+     */
+    public function __construct(
+        string $folder, Locale $locale, ?IVfsManager $vfsManager = null, ?LoggerInterface $logger = null )
+    {
 
-      parent::__construct( $folder, 'php', $locale, $logger, $vfsManager );
+        parent::__construct( $folder, 'php', $locale, $logger, $vfsManager );
 
-      $this->logInfo( 'Init PHP file translation source for folder "' . $folder . '".', __CLASS__ );
+        $this->logInfo( 'Init PHP file translation source for folder "' . $folder . '".', __CLASS__ );
 
-   }
+    }
 
-   // </editor-fold>
-
-
-   // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
-
-   /**
-    * Sets a options value.
-    *
-    * @param string $name
-    * @param mixed  $value
-    * @return \Niirrty\Translation\Sources\PHPFileSource
-    */
-   public function setOption( string $name, $value )
-   {
-
-      parent::setOption( $name, $value );
-
-      return $this;
-
-   }
-
-   // </editor-fold>
+    // </editor-fold>
 
 
-   // <editor-fold desc="// – – –   P R I V A T E   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – –">
+    // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
 
-   /**
-    * @return \Niirrty\Translation\Sources\PHPFileSource
-    */
-   protected function reloadFromFile()
-   {
+    /**
+     * Sets a options value.
+     *
+     * @param string $name
+     * @param mixed  $value
+     * @return PHPFileSource
+     */
+    public function setOption( string $name, $value )
+    {
 
-      $this->logInfo( 'Load data from file "' . $this->_options[ 'file' ] . '".', __CLASS__ );
+        parent::setOption( $name, $value );
 
-      try
-      {
-         /** @noinspection PhpIncludeInspection */
-         $translations = include $this->_options[ 'file' ];
-      }
-      catch ( \Throwable $ex )
-      {
-         $this->logNotice( 'Unable to include translations file.' . $ex->getMessage(), __CLASS__ );
-         $translations = [];
-      }
+        return $this;
 
-      if ( ! \is_array( $translations ) )
-      {
-         $this->logNotice( 'Invalid translations file format.', __CLASS__ );
-         $translations = [];
-      }
+    }
 
-      if ( ! isset( $this->_options[ 'data' ] ) )
-      {
-         $this->_options[ 'data' ] = [];
-      }
+    // </editor-fold>
 
-      $this->setData( \array_merge( $this->_options[ 'data' ], $translations ), false );
 
-      return $this;
+    // <editor-fold desc="// – – –   P R I V A T E   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – –">
 
-   }
+    /**
+     * @return PHPFileSource
+     */
+    protected function reloadFromFile()
+    {
 
-   // </editor-fold>
+        $this->logInfo( 'Load data from file "' . $this->_options[ 'file' ] . '".', __CLASS__ );
+
+        try
+        {
+            /** @noinspection PhpIncludeInspection */
+            $translations = include $this->_options[ 'file' ];
+        }
+        catch ( \Throwable $ex )
+        {
+            $this->logNotice( 'Unable to include translations file.' . $ex->getMessage(), __CLASS__ );
+            $translations = [];
+        }
+
+        if ( ! \is_array( $translations ) )
+        {
+            $this->logNotice( 'Invalid translations file format.', __CLASS__ );
+            $translations = [];
+        }
+
+        if ( ! isset( $this->_options[ 'data' ] ) )
+        {
+            $this->_options[ 'data' ] = [];
+        }
+
+        $this->setData( \array_merge( $this->_options[ 'data' ], $translations ), false );
+
+        return $this;
+
+    }
+
+    // </editor-fold>
 
 
 }
