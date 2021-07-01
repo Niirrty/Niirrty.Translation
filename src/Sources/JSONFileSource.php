@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2017-2020, Ni Irrty
+ * @copyright      © 2017-2021, Ni Irrty
  * @license        MIT
  * @since          2018-04-03
- * @version        0.3.0
+ * @version        0.3.1
  */
 
 
@@ -23,7 +23,7 @@ class JSONFileSource extends AbstractFileSource
 {
 
 
-    // <editor-fold desc="// –––––––   C O N S T R U C T O R   A N D / O R   D E S T R U C T O R   ––––––––">
+    #region // –––––––   C O N S T R U C T O R   A N D / O R   D E S T R U C T O R   ––––––––
 
     /**
      * JSONFileSource constructor.
@@ -43,10 +43,10 @@ class JSONFileSource extends AbstractFileSource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// –––––––   P U B L I C   M E T H O D S   ––––––––––––––––––––––––––––––––––––––">
+    #region // –––––––   P U B L I C   M E T H O D S   ––––––––––––––––––––––––––––––––––––––
 
     /**
      * Sets a options value.
@@ -64,10 +64,10 @@ class JSONFileSource extends AbstractFileSource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// –––––––   P R I V A T E   M E T H O D S   ––––––––––––––––––––––––––––––––––––">
+    #region // –––––––   P R I V A T E   M E T H O D S   ––––––––––––––––––––––––––––––––––––
 
     /**
      * @return JSONFileSource
@@ -104,7 +104,7 @@ class JSONFileSource extends AbstractFileSource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
 }

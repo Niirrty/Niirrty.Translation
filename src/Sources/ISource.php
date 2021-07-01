@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2017-2020, Niirrty
+ * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Translation\Sources
  * @since          2017-11-01
- * @version        0.3.0
+ * @version        0.3.1
  */
 
 

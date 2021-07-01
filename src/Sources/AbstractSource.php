@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2017-2020, Niirrty
+ * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Translation\Sources
  * @since          2017-11-01
- * @version        0.3.0
+ * @version        0.3.1
  */
 
 
@@ -28,7 +28,7 @@ abstract class AbstractSource implements ISource
 {
 
 
-    // <editor-fold desc="// – – –   P R O T E C T E D   F I E L D S   – – – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P R O T E C T E D   F I E L D S   – – – – – – – – – – – – – – – – – – – – – –
 
     /**
      * All options of the Source implementation
@@ -37,10 +37,10 @@ abstract class AbstractSource implements ISource
      */
     protected $_options      = [];
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P R O T E C T E D   C O N S T R U C T O R   – – – – – – – – – – – – – – – – –">
+    #region // – – –   P R O T E C T E D   C O N S T R U C T O R   – – – – – – – – – – – – – – – – –
 
     /**
      * AbstractSource constructor.
@@ -57,10 +57,10 @@ abstract class AbstractSource implements ISource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –
 
     /**
      * Gets the current defined locale.
@@ -182,10 +182,10 @@ abstract class AbstractSource implements ISource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// –––––––   P R O T E C T E D   M E T H O D S   ––––––––––––––––––––––––––––––––">
+    #region // – – –   P R O T E C T E D   M E T H O D S   – – – – – – – – – – – – – – – – – – – – –
 
     protected function logInfo( string $message, string $class )
     {
@@ -206,7 +206,7 @@ abstract class AbstractSource implements ISource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
 }

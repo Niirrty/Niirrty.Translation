@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2017-2020, Niirrty
+ * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Translation\Sources
  * @since          2017-11-01
- * @version        0.3.0
+ * @version        0.3.1
  */
 
 
@@ -60,7 +60,7 @@ class PHPFileSource extends AbstractFileSource
 {
 
 
-    // <editor-fold desc="// – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –
 
     /**
      * PHPFileSource constructor.
@@ -80,10 +80,10 @@ class PHPFileSource extends AbstractFileSource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
+    #region //// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –
 
     /**
      * Sets a options value.
@@ -101,10 +101,10 @@ class PHPFileSource extends AbstractFileSource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P R I V A T E   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – –">
+    #region //// – – –   P R I V A T E   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – –
 
     /**
      * @return PHPFileSource
@@ -142,7 +142,7 @@ class PHPFileSource extends AbstractFileSource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
 }

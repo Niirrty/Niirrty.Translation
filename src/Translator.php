@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2017-2020, Niirrty
+ * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Translation
  * @since          2017-11-01
- * @version        0.3.0
+ * @version        0.3.1
  */
 
 
@@ -32,17 +32,17 @@ class Translator implements ITranslator
 {
 
 
-    // <editor-fold desc="// – – –   P R I V A T E   S T A T I C   F I E L D S   – – – – – – – – – – – – – – – – –">
+    #region // – – –   P R I V A T E   S T A T I C   F I E L D S   – – – – – – – – – – – – – – – – –
 
     /**
      * @type Translator
      */
     private static $_instance = null;
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P R O T E C T E D   F I E L D S   – – – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P R O T E C T E D   F I E L D S   – – – – – – – – – – – – – – – – – – – – – –
 
     /**
      * All available sources
@@ -54,17 +54,17 @@ class Translator implements ITranslator
     /** @type Locale */
     protected $_locale;
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P R O T E C T E D   C O N S T A N T S   – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P R O T E C T E D   C O N S T A N T S   – – – – – – – – – – – – – – – – – – –
 
     protected const USS = '!?§=$)%(&/>_<-@';
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –
 
     /**
      * Translator constructor.
@@ -92,10 +92,10 @@ class Translator implements ITranslator
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –
 
     /**
      * Gets the source with defined name or NULL.
@@ -277,10 +277,10 @@ class Translator implements ITranslator
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   S T A T I C   M E T H O D S   – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   S T A T I C   M E T H O D S   – – – – – – – – – – – – – – – – –
 
     /**
      * Gets if a global instance is defined.
@@ -321,7 +321,7 @@ class Translator implements ITranslator
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
 }

@@ -4,7 +4,7 @@
  * @copyright      © 2018-2020, Niirrty
  * @license        MIT
  * @since          2018-04-05
- * @version        0.3.0
+ * @version        0.3.1
  */
 
 
@@ -23,7 +23,7 @@ abstract class AbstractFileSource extends AbstractSource
 {
 
 
-    // <editor-fold desc="// –––––––   C O N S T R U C T O R   A N D / O R   D E S T R U C T O R   ––––––––">
+    #region // –––––––   C O N S T R U C T O R   A N D / O R   D E S T R U C T O R   ––––––––
 
     /**
      * AbstractFileSource constructor.
@@ -47,10 +47,10 @@ abstract class AbstractFileSource extends AbstractSource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// –––––––   P U B L I C   M E T H O D S   ––––––––––––––––––––––––––––––––––––––">
+    #region // –––––––   P U B L I C   M E T H O D S   ––––––––––––––––––––––––––––––––––––––
 
     /**
      * Gets the optional virtual file system manager, used for the file source
@@ -227,10 +227,10 @@ abstract class AbstractFileSource extends AbstractSource
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// -------   P R O T E C T E D   M E T H O D S   --------------------------------">
+    #region // -------   P R O T E C T E D   M E T H O D S   --------------------------------
 
     /**
      * @return AbstractFileSource
@@ -297,7 +297,7 @@ abstract class AbstractFileSource extends AbstractSource
      */
     protected abstract function reloadFromFile();
 
-    // </editor-fold>
+    #endregion
 
 
 }

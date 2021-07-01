@@ -4,7 +4,7 @@
  * @copyright      © 2018-2020, Niirrty
  * @license        MIT
  * @since          2018-04-06
- * @version        0.3.0
+ * @version        0.3.1
  */
 
 

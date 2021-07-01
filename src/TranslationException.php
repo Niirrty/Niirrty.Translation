@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2017-2020, Niirrty
+ * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Translation
  * @since          2017-11-01
- * @version        0.3.0
+ * @version        0.3.1
  */
 
 
@@ -26,7 +26,7 @@ class TranslationException extends NiirrtyException
 {
 
 
-    // <editor-fold desc="// – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   C O N S T R U C T O R   – – – – – – – – – – – – – – – – – – – –
 
     /**
      * TranslationException constructor.
@@ -42,7 +42,7 @@ class TranslationException extends NiirrtyException
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
 }
