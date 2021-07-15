@@ -31,7 +31,7 @@ class PHPFileSourceTest extends TestCase
     /** @type \Niirrty\Translation\Tests\Fixtures\ArrayCallbackLogger */
     private $log;
 
-    public function setUp()
+    public function setUp() : void
     {
 
         parent::setUp();
@@ -122,7 +122,7 @@ class PHPFileSourceTest extends TestCase
         $this->srcDe->reload();
         $this->assertSame(
             [  LogLevel::NOTICE,
-                'Unable to include translations file.fopen(/foo/bar/baz19293949596979899909): failed to open stream: No such file or directory',
+                'Unable to include translations file.fopen(/foo/bar/baz19293949596979899909): Failed to open stream: No such file or directory',
                 [ 'Class' => 'Niirrty\\Translation\\Sources\\PHPFileSource' ] ],
             $this->log->getMessage( $this->log->countMessages() - 2 )
         );

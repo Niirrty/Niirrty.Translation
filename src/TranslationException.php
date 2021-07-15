@@ -4,7 +4,7 @@
  * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Translation
  * @since          2017-11-01
- * @version        0.3.1
+ * @version        0.4.0
  */
 
 
@@ -14,7 +14,7 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation;
 
 
-use Niirrty\NiirrtyException;
+use \Niirrty\NiirrtyException;
 
 
 /**

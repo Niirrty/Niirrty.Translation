@@ -4,7 +4,7 @@
  * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Translation\Sources
  * @since          2017-11-01
- * @version        0.3.1
+ * @version        0.4.0
  */
 
 
@@ -14,9 +14,9 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation\Sources;
 
 
-use Niirrty\Locale\Locale;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
+use \Niirrty\Locale\Locale;
+use \Psr\Log\LoggerInterface;
+use \Psr\Log\NullLogger;
 
 
 /**
@@ -35,7 +35,7 @@ abstract class AbstractSource implements ISource
      *
      * @type array
      */
-    protected $_options      = [];
+    protected array $_options = [];
 
     #endregion
 
@@ -92,7 +92,7 @@ abstract class AbstractSource implements ISource
      * @param Locale $locale
      * @return ISource
      */
-    public final function setLocale( Locale $locale )
+    public final function setLocale( Locale $locale ) : ISource
     {
 
         $this->_options[ 'locale' ] = $locale;
@@ -109,7 +109,7 @@ abstract class AbstractSource implements ISource
      * @param LoggerInterface|null $logger
      * @return ISource
      */
-    public final function setLogger( ?LoggerInterface $logger )
+    public final function setLogger( ?LoggerInterface $logger ) : ISource
     {
 
         $this->_options[ 'logger' ] = null === $logger ? new NullLogger() : $logger;
@@ -135,11 +135,12 @@ abstract class AbstractSource implements ISource
     /**
      * Gets the option value of option with defined name or $defaultValue if the option is unknown.
      *
-     * @param string $name The name of the option.
-     * @param mixed  $defaultValue This value is returned if the option not exists.
+     * @param string     $name         The name of the option.
+     * @param mixed $defaultValue This value is returned if the option not exists.
+     *
      * @return mixed
      */
-    public final function getOption( string $name, $defaultValue = false )
+    public final function getOption( string $name, mixed $defaultValue = false ) : mixed
     {
 
         if ( ! $this->hasOption( $name ) )
@@ -171,7 +172,7 @@ abstract class AbstractSource implements ISource
      * @param mixed  $value
      * @return AbstractSource
      */
-    public function setOption( string $name, $value )
+    public function setOption( string $name, mixed $value ) : ISource
     {
 
         $this->_options[ $name ] = $value;

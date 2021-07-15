@@ -31,7 +31,7 @@ class JSONFileSourceTest extends TestCase
     /** @type \Niirrty\Translation\Tests\Fixtures\ArrayCallbackLogger */
     private $log;
 
-    public function setUp()
+    public function setUp() : void
     {
 
         parent::setUp();

@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2018-2020, Niirrty
+ * @copyright      © 2018-2021, Niirrty
  * @license        MIT
  * @since          2018-04-06
- * @version        0.3.1
+ * @version        0.4.0
  */
 
 
@@ -42,7 +42,7 @@ interface ITranslator
      * @param ISource $source
      * @return ITranslator
      */
-    public function addSource( string $sourceName, ISource $source );
+    public function addSource( string $sourceName, ISource $source ): ITranslator;
 
     /**
      * Removes a source
@@ -50,14 +50,14 @@ interface ITranslator
      * @param string $sourceName The source name
      * @return ITranslator
      */
-    public function removeSource( string $sourceName );
+    public function removeSource( string $sourceName ): ITranslator;
 
     /**
      * Removes all sources.
      *
      * @return ITranslator
      */
-    public function cleanSources();
+    public function cleanSources(): ITranslator;
 
     /**
      * Reads the translation and return it.
@@ -66,12 +66,12 @@ interface ITranslator
      *
      * If a valid source index is defined, only this source is used.
      *
-     * @param string|int  $identifier         The translation identifier
+     * @param int|string  $identifier         The translation identifier
      * @param string|null $sourceName         The name of the source or NULL for search all sources
-     * @param mixed       $defaultTranslation Is returned if the translation was not found
+     * @param mixed  $defaultTranslation Is returned if the translation was not found
      * @return mixed
      */
-    public function read( $identifier, ?string $sourceName = null, $defaultTranslation = false );
+    public function read( int|string $identifier, ?string $sourceName = null, mixed $defaultTranslation = false ): mixed;
 
     /**
      * Gets a array with all defined sources. THe keys are the associated source names.

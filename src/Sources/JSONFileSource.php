@@ -4,7 +4,7 @@
  * @copyright      © 2017-2021, Ni Irrty
  * @license        MIT
  * @since          2018-04-03
- * @version        0.3.1
+ * @version        0.4.0
  */
 
 
@@ -14,9 +14,9 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation\Sources;
 
 
-use Niirrty\IO\Vfs\IVfsManager;
-use Niirrty\Locale\Locale;
-use Psr\Log\LoggerInterface;
+use \Niirrty\IO\Vfs\IVfsManager;
+use \Niirrty\Locale\Locale;
+use \Psr\Log\LoggerInterface;
 
 
 class JSONFileSource extends AbstractFileSource
@@ -53,9 +53,10 @@ class JSONFileSource extends AbstractFileSource
      *
      * @param string $name
      * @param mixed  $value
+     *
      * @return JSONFileSource
      */
-    public function setOption( string $name, $value )
+    public function setOption( string $name, mixed $value ) : JSONFileSource
     {
 
         parent::setOption( $name, $value );
@@ -72,7 +73,7 @@ class JSONFileSource extends AbstractFileSource
     /**
      * @return JSONFileSource
      */
-    protected function reloadFromFile()
+    protected function reloadFromFile() : JSONFileSource
     {
 
         $this->logInfo( 'Reload data from file "' . $this->_options[ 'file' ] . '".', __CLASS__ );

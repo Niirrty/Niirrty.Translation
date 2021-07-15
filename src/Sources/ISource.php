@@ -4,7 +4,7 @@
  * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Translation\Sources
  * @since          2017-11-01
- * @version        0.3.1
+ * @version        0.4.0
  */
 
 
@@ -14,8 +14,8 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation\Sources;
 
 
-use Niirrty\Locale\Locale;
-use Psr\Log\LoggerInterface;
+use \Niirrty\Locale\Locale;
+use \Psr\Log\LoggerInterface;
 
 
 /**
@@ -29,11 +29,12 @@ interface ISource
     /**
      * Reads one or more translation values.
      *
-     * @param  string|int $identifier
-     * @param  mixed      $defaultTranslation Is returned if no translation was found for defined identifier.
+     * @param int|string|null $identifier
+     * @param mixed $defaultTranslation Is returned if no translation was found for defined identifier.
+     *
      * @return mixed
      */
-    public function read( $identifier, $defaultTranslation = false );
+    public function read( int|string|null $identifier, mixed $defaultTranslation = false ): mixed;
 
     /**
      * Gets the current defined locale.
@@ -59,11 +60,12 @@ interface ISource
     /**
      * Gets the option value of option with defined name or FALSE if the option is unknown.
      *
-     * @param string $name The name of the option.
-     * @param mixed  $defaultValue This value is remembered and returned if the option not exists
+     * @param string     $name         The name of the option.
+     * @param mixed $defaultValue This value is remembered and returned if the option not exists
+     *
      * @return mixed
      */
-    public function getOption( string $name, $defaultValue = false );
+    public function getOption( string $name, mixed $defaultValue = false ): mixed;
 
     /**
      * Sets a new locale.
@@ -71,7 +73,7 @@ interface ISource
      * @param Locale $locale
      * @return ISource
      */
-    public function setLocale( Locale $locale );
+    public function setLocale( Locale $locale ): ISource;
 
     /**
      * Sets a new logger or null if no logger should be used.
@@ -79,16 +81,16 @@ interface ISource
      * @param LoggerInterface|null $logger
      * @return ISource
      */
-    public function setLogger( ?LoggerInterface $logger );
+    public function setLogger( ?LoggerInterface $logger ): ISource;
 
     /**
      * Sets a options value.
      *
      * @param string $name
-     * @param $value
+     * @param mixed $value
      * @return ISource
      */
-    public function setOption( string $name, $value );
+    public function setOption( string $name, mixed $value ): ISource;
 
     /**
      * Gets if an option with defined name exists.
@@ -103,7 +105,7 @@ interface ISource
      *
      * @return ISource
      */
-    public function reload();
+    public function reload(): ISource;
 
 
 }

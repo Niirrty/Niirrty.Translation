@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2018-2020, Niirrty
+ * @copyright      © 2018-2021, Niirrty
  * @license        MIT
  * @since          2018-04-05
- * @version        0.3.1
+ * @version        0.4.0
  */
 
 
@@ -14,9 +14,9 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation\Sources;
 
 
-use Niirrty\IO\Vfs\IVfsManager;
-use Niirrty\Locale\Locale;
-use Psr\Log\LoggerInterface;
+use \Niirrty\IO\Vfs\IVfsManager;
+use \Niirrty\Locale\Locale;
+use \Psr\Log\LoggerInterface;
 
 
 abstract class AbstractFileSource extends AbstractSource
@@ -94,7 +94,7 @@ abstract class AbstractFileSource extends AbstractSource
      * @param IVfsManager|null $manager
      * @return AbstractFileSource
      */
-    public final function setVfsManager( ?IVfsManager $manager )
+    public final function setVfsManager( ?IVfsManager $manager ): static
     {
 
         $this->_options[ 'vfsManager' ] = $manager;
@@ -111,7 +111,7 @@ abstract class AbstractFileSource extends AbstractSource
      * @param  string|null $folder
      * @return AbstractFileSource
      */
-    public final function setTranslationsFolder( ?string $folder )
+    public final function setTranslationsFolder( ?string $folder ): static
     {
 
         $this->_options[ 'folder' ] = $folder;
@@ -128,7 +128,7 @@ abstract class AbstractFileSource extends AbstractSource
      * @param  string $extension
      * @return AbstractFileSource
      */
-    public final function setFileExtension( string $extension )
+    public final function setFileExtension( string $extension ): static
     {
 
         $this->_options[ 'fileExtension' ] = $extension;
@@ -149,7 +149,7 @@ abstract class AbstractFileSource extends AbstractSource
      * @param bool  $doReload
      * @return AbstractFileSource
      */
-    public function setData( array $data, bool $doReload = true )
+    public function setData( array $data, bool $doReload = true ): static
     {
 
         $this->logInfo( 'Manual set new data' . ( $doReload ? ' and reload.' : '.' ), __CLASS__ );
@@ -175,11 +175,12 @@ abstract class AbstractFileSource extends AbstractSource
     /**
      * Reads one or more translation values.
      *
-     * @param  string|int $identifier
-     * @param  mixed      $defaultTranslation Is returned if no translation was found for defined identifier.
+     * @param int|string|null $identifier
+     * @param mixed $defaultTranslation Is returned if no translation was found for defined identifier.
+     *
      * @return mixed
      */
-    public function read( $identifier, $defaultTranslation = false )
+    public function read( int|string|null $identifier, mixed $defaultTranslation = false ) : mixed
     {
 
         if ( ! isset( $this->_options[ 'data' ] ) )
@@ -209,7 +210,7 @@ abstract class AbstractFileSource extends AbstractSource
      *
      * @return AbstractFileSource
      */
-    public function reload()
+    public function reload() : static
     {
 
         if ( isset( $this->_options[ 'folder' ] ) )
@@ -235,7 +236,7 @@ abstract class AbstractFileSource extends AbstractSource
     /**
      * @return AbstractFileSource
      */
-    protected function reloadFromFolder()
+    protected function reloadFromFolder(): AbstractFileSource|static
     {
 
         $languageFolderBase = $this->_options[ 'folder' ];
@@ -295,7 +296,7 @@ abstract class AbstractFileSource extends AbstractSource
     /**
      * @return AbstractFileSource
      */
-    protected abstract function reloadFromFile();
+    protected abstract function reloadFromFile(): AbstractFileSource;
 
     #endregion
 

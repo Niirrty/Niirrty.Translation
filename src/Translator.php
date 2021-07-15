@@ -4,7 +4,7 @@
  * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Translation
  * @since          2017-11-01
- * @version        0.3.1
+ * @version        0.4.0
  */
 
 
@@ -14,8 +14,8 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation;
 
 
-use Niirrty\Locale\Locale;
-use Niirrty\Translation\Sources\ISource;
+use \Niirrty\Locale\Locale;
+use \Niirrty\Translation\Sources\ISource;
 
 
 /**
@@ -35,9 +35,9 @@ class Translator implements ITranslator
     #region // – – –   P R I V A T E   S T A T I C   F I E L D S   – – – – – – – – – – – – – – – – –
 
     /**
-     * @type Translator
+     * @type Translator|null
      */
-    private static $_instance = null;
+    private static ?Translator $_instance = null;
 
     #endregion
 
@@ -49,10 +49,10 @@ class Translator implements ITranslator
      *
      * @type ISource[]
      */
-    protected $_sources;
+    protected array $_sources;
 
-    /** @type Locale */
-    protected $_locale;
+    /** @type Locale|null */
+    protected ?Locale $_locale;
 
     #endregion
 
@@ -101,7 +101,8 @@ class Translator implements ITranslator
      * Gets the source with defined name or NULL.
      *
      * @param string $sourceName
-     * @return ISource
+     *
+     * @return ISource|null
      */
     public final function getSource( string $sourceName ) : ?ISource
     {
@@ -164,12 +165,13 @@ class Translator implements ITranslator
      *
      * If a valid source index is defined, only this source is used.
      *
-     * @param string|int  $identifier The translation identifier
-     * @param string|null $sourceName The name of the source or NULL for search all sources
-     * @param mixed       $defaultTranslation Is returned if the translation was not found
+     * @param int|string  $identifier         The translation identifier
+     * @param string|null $sourceName         The name of the source or NULL for search all sources
+     * @param mixed  $defaultTranslation Is returned if the translation was not found
      * @return mixed
      */
-    public function read( $identifier, ?string $sourceName = null, $defaultTranslation = false )
+    public function read(
+        int|string $identifier, ?string $sourceName = null, mixed $defaultTranslation = false ) : mixed
     {
 
         if ( null !== $sourceName && isset( $this->_sources[ $sourceName ] ) )

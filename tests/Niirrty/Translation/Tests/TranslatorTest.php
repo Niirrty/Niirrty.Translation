@@ -37,7 +37,7 @@ class TranslatorTest extends TestCase
     /** @type \Niirrty\Translation\Translator */
     private $trans;
 
-    public function setUp()
+    public function setUp() : void
     {
 
         parent::setUp();
@@ -53,13 +53,6 @@ class TranslatorTest extends TestCase
 
     }
 
-    public function testConstructException()
-    {
-
-        $this->expectException( TranslationException::class );
-        $trans = new Translator();
-
-    }
     public function testConstruct()
     {
 

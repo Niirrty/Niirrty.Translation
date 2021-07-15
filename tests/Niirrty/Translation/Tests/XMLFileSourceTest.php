@@ -31,7 +31,7 @@ class XMLFileSourceTest extends TestCase
     /** @type \Niirrty\Translation\Tests\Fixtures\ArrayCallbackLogger */
     private $log;
 
-    public function setUp()
+    public function setUp() : void
     {
 
         parent::setUp();
@@ -116,8 +116,8 @@ class XMLFileSourceTest extends TestCase
         $this->srcFr->reload();
         $this->assertSame(
             [  LogLevel::WARNING,
-                "Unable to load XML translations file. simplexml_load_file(): "
-                . \dirname( \dirname( \dirname( __DIR__ ) ) )
+                "Unable to load XML translations file. simplexml_load_file(): file:/"
+                . \str_replace( '\\', '/', \dirname( \dirname( \dirname( __DIR__ ) ) ) )
                 . "/data/translations/ru_RU.xml:1: parser error : Start tag expected, '",
                 [ 'Class' => 'Niirrty\\Translation\\Sources\\XMLFileSource' ] ],
             $this->log->getMessage( $this->log->countMessages() - 2 )

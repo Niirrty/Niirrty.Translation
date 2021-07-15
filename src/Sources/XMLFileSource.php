@@ -4,7 +4,7 @@
  * @copyright      © 2017-2021, Ni Irrty
  * @license        MIT
  * @since          2018-04-03
- * @version        0.3.1
+ * @version        0.4.0
  */
 
 
@@ -14,10 +14,10 @@ declare( strict_types = 1 );
 namespace Niirrty\Translation\Sources;
 
 
-use Niirrty\IO\Vfs\IVfsManager;
-use Niirrty\Locale\Locale;
-use Niirrty\XmlAttributeHelper;
-use Psr\Log\LoggerInterface;
+use \Niirrty\IO\Vfs\IVfsManager;
+use \Niirrty\Locale\Locale;
+use \Niirrty\XmlAttributeHelper;
+use \Psr\Log\LoggerInterface;
 
 
 class XMLFileSource extends AbstractFileSource
@@ -54,9 +54,10 @@ class XMLFileSource extends AbstractFileSource
      *
      * @param string $name
      * @param mixed  $value
+     *
      * @return XMLFileSource
      */
-    public function setOption( string $name, $value )
+    public function setOption( string $name, mixed $value ) : XMLFileSource
     {
 
         parent::setOption( $name, $value );
@@ -73,7 +74,7 @@ class XMLFileSource extends AbstractFileSource
     /**
      * @return XMLFileSource
      */
-    protected function reloadFromFile()
+    protected function reloadFromFile() : XMLFileSource
     {
 
         $this->logInfo( 'Load data from XML file "' . $this->_options[ 'file' ] . '".', __CLASS__ );
