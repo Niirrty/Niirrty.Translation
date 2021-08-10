@@ -11,8 +11,8 @@
    ],
    "require": {
       "php": ">=8.0",
-      "niirrty/niirrty.locale": "~0.4",
-      "niirrty/niirrty.io.vfs": "~0.4",
+      "niirrty/niirrty.locale": "~0.4.2",
+      "niirrty/niirrty.io.vfs": "~0.4.2",
       "psr/log": "~1.0",
       "ext-json": "*",
       "ext-simplexml": "*"
