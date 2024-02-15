@@ -56,12 +56,10 @@ class JSONFileSource extends AbstractFileSource
      *
      * @return JSONFileSource
      */
-    public function setOption( string $name, mixed $value ) : JSONFileSource
+    public function setOption( string $name, mixed $value ) : self
     {
 
-        parent::setOption( $name, $value );
-
-        return $this;
+        return parent::setOption( $name, $value );
 
     }
 
@@ -73,7 +71,7 @@ class JSONFileSource extends AbstractFileSource
     /**
      * @return JSONFileSource
      */
-    protected function reloadFromFile() : JSONFileSource
+    protected function reloadFromFile() : self
     {
 
         $this->logInfo( 'Reload data from file "' . $this->_options[ 'file' ] . '".', __CLASS__ );

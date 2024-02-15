@@ -10,9 +10,9 @@
       }
    ],
    "require": {
-      "php": ">=8.0",
-      "niirrty/niirrty.locale": "^0.5",
-      "niirrty/niirrty.io.vfs": "^0.5",
+      "php": ">=8.1",
+      "niirrty/niirrty.locale": "^0.6",
+      "niirrty/niirrty.io.vfs": "^0.6",
       "psr/log": "~1.0",
       "ext-json": "*",
       "ext-simplexml": "*"

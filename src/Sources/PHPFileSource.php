@@ -24,7 +24,7 @@ use \Psr\Log\LoggerInterface;
  *
  * Loads a translation array source from a specific folder that contains one or more locale depending PHP files.
  *
- * E.G: if the defined $folder is '/var/www/example.com/translations' and the declared Locale is de_DE.UTF-8
+ * e.G: if the defined $folder is '/var/www/example.com/translations' and the declared Locale is de_DE.UTF-8
  *
  * it tries to use:
  *
@@ -93,12 +93,10 @@ class PHPFileSource extends AbstractFileSource
      *
      * @return PHPFileSource
      */
-    public function setOption( string $name, mixed $value ) : PHPFileSource
+    public function setOption( string $name, mixed $value ) : self
     {
 
-        parent::setOption( $name, $value );
-
-        return $this;
+        return parent::setOption( $name, $value );
 
     }
 
@@ -110,14 +108,13 @@ class PHPFileSource extends AbstractFileSource
     /**
      * @return PHPFileSource
      */
-    protected function reloadFromFile() : PHPFileSource
+    protected function reloadFromFile() : self
     {
 
         $this->logInfo( 'Load data from file "' . $this->_options[ 'file' ] . '".', __CLASS__ );
 
         try
         {
-            /** @noinspection PhpIncludeInspection */
             $translations = include $this->_options[ 'file' ];
         }
         catch ( \Throwable $ex )

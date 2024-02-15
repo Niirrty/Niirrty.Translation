@@ -103,9 +103,9 @@ interface ISource
     /**
      * Reload the source by current defined options.
      *
-     * @return ISource
+     * @return self
      */
-    public function reload(): ISource;
+    public function reload(): self;
 
 
 }

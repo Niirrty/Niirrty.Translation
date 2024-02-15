@@ -82,7 +82,7 @@ class Translator implements ITranslator
             if ( ! Locale::HasGlobalInstance() )
             {
                 throw new TranslationException(
-                    'Can not init a translator if no usable Locale instance is avialable!'
+                    'Can not init a translator if no usable Locale instance is available!'
                 );
             }
             $locale = Locale::GetGlobalInstance();
@@ -118,7 +118,7 @@ class Translator implements ITranslator
      * @param ISource $source
      * @return Translator
      */
-    public function addSource( string $sourceName, ISource $source ) : Translator
+    public function addSource( string $sourceName, ISource $source ) : self
     {
 
         $source->setLocale( $this->_locale );
@@ -135,7 +135,7 @@ class Translator implements ITranslator
      * @param string $sourceName The source name
      * @return Translator
      */
-    public function removeSource( string $sourceName ) : Translator
+    public function removeSource( string $sourceName ) : self
     {
 
         unset ( $this->_sources[ $sourceName ] );
@@ -149,7 +149,7 @@ class Translator implements ITranslator
      *
      * @return Translator
      */
-    public function cleanSources() : Translator
+    public function cleanSources() : self
     {
 
         $this->_sources = [];
@@ -272,7 +272,7 @@ class Translator implements ITranslator
     /**
      * Sets the current instance as global usable Translator instance.
      */
-    public final function setAsGlobalInstance()
+    public final function setAsGlobalInstance() : void
     {
 
         self::$_instance = $this;
@@ -316,7 +316,7 @@ class Translator implements ITranslator
     /**
      * Removes the global translator instance.
      */
-    public static function RemoveInstance()
+    public static function RemoveInstance() : void
     {
 
         self::$_instance = null;

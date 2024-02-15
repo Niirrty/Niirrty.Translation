@@ -40,24 +40,24 @@ interface ITranslator
      *
      * @param string                               $sourceName The unique source name
      * @param ISource $source
-     * @return ITranslator
+     * @return self
      */
-    public function addSource( string $sourceName, ISource $source ): ITranslator;
+    public function addSource( string $sourceName, ISource $source ): self;
 
     /**
      * Removes a source
      *
      * @param string $sourceName The source name
-     * @return ITranslator
+     * @return self
      */
-    public function removeSource( string $sourceName ): ITranslator;
+    public function removeSource( string $sourceName ): self;
 
     /**
      * Removes all sources.
      *
-     * @return ITranslator
+     * @return self
      */
-    public function cleanSources(): ITranslator;
+    public function cleanSources(): self;
 
     /**
      * Reads the translation and return it.

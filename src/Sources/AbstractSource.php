@@ -90,9 +90,9 @@ abstract class AbstractSource implements ISource
      * Sets a new locale.
      *
      * @param Locale $locale
-     * @return ISource
+     * @return self
      */
-    public final function setLocale( Locale $locale ) : ISource
+    public final function setLocale( Locale $locale ) : self
     {
 
         $this->_options[ 'locale' ] = $locale;
@@ -107,9 +107,9 @@ abstract class AbstractSource implements ISource
      * Sets a new logger or null if no logger should be used.
      *
      * @param LoggerInterface|null $logger
-     * @return ISource
+     * @return self
      */
-    public final function setLogger( ?LoggerInterface $logger ) : ISource
+    public final function setLogger( ?LoggerInterface $logger ) : self
     {
 
         $this->_options[ 'logger' ] = null === $logger ? new NullLogger() : $logger;
@@ -170,9 +170,9 @@ abstract class AbstractSource implements ISource
      *
      * @param string $name
      * @param mixed  $value
-     * @return AbstractSource
+     * @return self
      */
-    public function setOption( string $name, mixed $value ) : ISource
+    public function setOption( string $name, mixed $value ) : self
     {
 
         $this->_options[ $name ] = $value;
@@ -188,19 +188,19 @@ abstract class AbstractSource implements ISource
 
     #region // – – –   P R O T E C T E D   M E T H O D S   – – – – – – – – – – – – – – – – – – – – –
 
-    protected function logInfo( string $message, string $class )
+    protected function logInfo( string $message, string $class ) : void
     {
 
         $this->_options[ 'logger' ]->info( $message, [ 'Class' => $class ] );
 
     }
-    protected function logNotice( string $message, string $class )
+    protected function logNotice( string $message, string $class ) : void
     {
 
         $this->_options[ 'logger' ]->notice( $message, [ 'Class' => $class ] );
 
     }
-    protected function logWarning( string $message, string $class )
+    protected function logWarning( string $message, string $class ) : void
     {
 
         $this->_options[ 'logger' ]->warning( $message, [ 'Class' => $class ] );

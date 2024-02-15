@@ -94,7 +94,7 @@ abstract class AbstractFileSource extends AbstractSource
      * @param IVfsManager|null $manager
      * @return AbstractFileSource
      */
-    public final function setVfsManager( ?IVfsManager $manager ): static
+    public final function setVfsManager( ?IVfsManager $manager ): self
     {
 
         $this->_options[ 'vfsManager' ] = $manager;
@@ -111,7 +111,7 @@ abstract class AbstractFileSource extends AbstractSource
      * @param  string|null $folder
      * @return AbstractFileSource
      */
-    public final function setTranslationsFolder( ?string $folder ): static
+    public final function setTranslationsFolder( ?string $folder ): self
     {
 
         $this->_options[ 'folder' ] = $folder;
@@ -128,7 +128,7 @@ abstract class AbstractFileSource extends AbstractSource
      * @param  string $extension
      * @return AbstractFileSource
      */
-    public final function setFileExtension( string $extension ): static
+    public final function setFileExtension( string $extension ): self
     {
 
         $this->_options[ 'fileExtension' ] = $extension;
@@ -149,7 +149,7 @@ abstract class AbstractFileSource extends AbstractSource
      * @param bool  $doReload
      * @return AbstractFileSource
      */
-    public function setData( array $data, bool $doReload = true ): static
+    public function setData( array $data, bool $doReload = true ): self
     {
 
         $this->logInfo( 'Manual set new data' . ( $doReload ? ' and reload.' : '.' ), __CLASS__ );
@@ -210,7 +210,7 @@ abstract class AbstractFileSource extends AbstractSource
      *
      * @return AbstractFileSource
      */
-    public function reload() : static
+    public function reload() : self
     {
 
         if ( isset( $this->_options[ 'folder' ] ) )
@@ -234,9 +234,9 @@ abstract class AbstractFileSource extends AbstractSource
     #region // -------   P R O T E C T E D   M E T H O D S   --------------------------------
 
     /**
-     * @return AbstractFileSource
+     * @return self
      */
-    protected function reloadFromFolder(): AbstractFileSource|static
+    protected function reloadFromFolder(): self
     {
 
         $languageFolderBase = $this->_options[ 'folder' ];
@@ -296,7 +296,7 @@ abstract class AbstractFileSource extends AbstractSource
     /**
      * @return AbstractFileSource
      */
-    protected abstract function reloadFromFile(): AbstractFileSource;
+    protected abstract function reloadFromFile(): self;
 
     #endregion
 

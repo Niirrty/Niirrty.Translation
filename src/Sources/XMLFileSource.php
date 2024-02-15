@@ -29,9 +29,9 @@ class XMLFileSource extends AbstractFileSource
     /**
      * XMLFileSource constructor.
      *
-     * @param string                            $folder
-     * @param Locale $locale
-     * @param IVfsManager|null  $vfsManager
+     * @param string               $folder
+     * @param Locale               $locale
+     * @param IVfsManager|null     $vfsManager
      * @param null|LoggerInterface $logger
      */
     public function __construct(
@@ -57,12 +57,10 @@ class XMLFileSource extends AbstractFileSource
      *
      * @return XMLFileSource
      */
-    public function setOption( string $name, mixed $value ) : XMLFileSource
+    public function setOption( string $name, mixed $value ) : self
     {
 
-        parent::setOption( $name, $value );
-
-        return $this;
+        return parent::setOption( $name, $value );
 
     }
 
@@ -74,7 +72,7 @@ class XMLFileSource extends AbstractFileSource
     /**
      * @return XMLFileSource
      */
-    protected function reloadFromFile() : XMLFileSource
+    protected function reloadFromFile() : self
     {
 
         $this->logInfo( 'Load data from XML file "' . $this->_options[ 'file' ] . '".', __CLASS__ );
@@ -122,11 +120,11 @@ class XMLFileSource extends AbstractFileSource
                     __CLASS__ );
                 continue;
             }
-            if ( null === ( $txt = $this->findText( $transElement ) ) )
+            if ( null === ( $value = $this->findText( $transElement ) ) )
             {
-                if ( null === ( $txt = $this->findList( $transElement ) ) )
+                if ( null === ( $value = $this->findList( $transElement ) ) )
                 {
-                    if ( null === ( $txt = $this->findDict( $transElement ) ) )
+                    if ( null === ( $value = $this->findDict( $transElement ) ) )
                     {
                         $this->logNotice(
                             'Parse-Error: Invalid trans element at index ' . $elementIndex . '. Missing a Text/List/Dict.',
@@ -135,7 +133,7 @@ class XMLFileSource extends AbstractFileSource
                     }
                 }
             }
-            $out[ $id ] = $txt;
+            $out[ $id ] = $value;
         }
 
         return $out;
