@@ -6,6 +6,7 @@
         <cache>
           <versions>
             <info id="Local" version="8.5.17" />
+            <info id="LocalC:\Users\niirr\PhpstormProjects\Niirrty.Translation\vendor\autoload.php" version="8.5.35" />
           </versions>
         </cache>
       </tool>
